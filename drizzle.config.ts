@@ -6,8 +6,8 @@ if (!url) throw new Error("DATABASE_URL не задан");
 
 export default defineConfig({
   dialect: "postgresql",
-  schema: "./db/schema",
-  out: "./db/migrations",
+  schema: "./server/db/schema",
+  out: "./server/db/migrations",
   dbCredentials: {
     url: url
   },

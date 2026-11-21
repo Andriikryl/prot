@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { inArray, eq } from "drizzle-orm";
-import { db, client } from "./index";
+import { db, client } from "./client";
 import {
   workspaces,
   projects,
