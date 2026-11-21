@@ -6,16 +6,27 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    // Фронтенд (FSD) не ходит в БД напрямую: данные приходят через
+    // Фронтенд не ходит в БД напрямую: данные приходят через
     // публичный API модулей server/ (запросы и сервисы).
-    files: ["src/**/*.{ts,tsx}", "app/**/*.{ts,tsx}"],
+    files: [
+      "app/**/*.{ts,tsx}",
+      "components/**/*.{ts,tsx}",
+      "hooks/**/*.{ts,tsx}",
+      "lib/**/*.{ts,tsx}",
+    ],
     rules: {
       "no-restricted-imports": [
         "error",
         {
           patterns: [
             {
-              group: ["@server/db", "@server/db/*", "**/server/db", "**/server/db/*"],
+              group: [
+                "@server/db",
+                "@server/db/*",
+                "@/server/*",
+                "**/server/db",
+                "**/server/db/*",
+              ],
               message:
                 "Прямой доступ к БД разрешён только внутри server/. Используй публичный API серверного модуля.",
             },
@@ -26,7 +37,7 @@ const eslintConfig = defineConfig([
   },
   {
     // Бэкенд не знает о фронтенде: зависимости идут только от UI к server.
-    // Алиас @/* указывает на src/ (фронтенд), поэтому запрещён целиком.
+    // Алиас @/* указывает на корень проекта (фронтенд), поэтому запрещён целиком.
     files: ["server/**/*.{ts,tsx}"],
     rules: {
       "no-restricted-imports": [
@@ -34,9 +45,9 @@ const eslintConfig = defineConfig([
         {
           patterns: [
             {
-              group: ["@/*", "**/src/*", "**/app/*"],
+              group: ["@/*", "**/app/*", "**/components/*", "**/hooks/*"],
               message:
-                "server/ не должен импортировать фронтенд (src/, app/). Зависимость должна идти от UI к server.",
+                "server/ не должен импортировать фронтенд (app/, components/, hooks/, lib/). Зависимость должна идти от UI к server.",
             },
           ],
         },
